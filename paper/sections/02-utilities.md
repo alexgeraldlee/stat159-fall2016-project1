@@ -42,3 +42,10 @@ always have an updated version of the project. For this project, GitHub
 acts as a storage area for the project so that the instructors can view
 the files in my "submission", and also serves as an online repository
 to save my progress should anything happen to my local files.
+
+
+##What is Pandoc?
+Pandoc is a Unix utility that facilitates file conversion between a wide
+variety of files. Pandoc allows users to easily convert files into different
+formats, which allows them to be posted on different platforms and more
+easily transmit them to other machines. 

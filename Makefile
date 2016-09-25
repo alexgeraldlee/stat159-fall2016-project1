@@ -4,8 +4,8 @@ all: paper.html
 
 
 paper.html: $(mds)
-	pandoc -s $(mds) -o paper.md
-	pandoc -s /paper.md -o /paper.html
+	pandoc -s $(mds) -o paper/paper.md
+	pandoc -s paper/paper.md -o paper/paper.html
 
 
 clean:
