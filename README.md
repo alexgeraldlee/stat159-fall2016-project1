@@ -4,41 +4,26 @@
 
 The final structure of the project should look something like this:
 
+```
 stat159-fall2016-project1/
-
 	.gitignore
-
 	README.md
-
 	Makefile
-
 	paper/
-
 		sections/
-
 			00-abstract.md
-
 			01-introduction.md
-
 			02-discussion.md
-
 			03-conclusions.md
-
 		paper.md
-
 		paper.html
-
 	images/
-
 		git-logo.png
-
 		github-logo.png
-
 		markdown-logo.png
-
 		pandoc-logo.png
-
 		stat159-logo.png
+```
 
 ##The Makefile
 

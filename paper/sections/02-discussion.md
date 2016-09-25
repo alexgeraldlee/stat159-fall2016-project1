@@ -59,7 +59,24 @@ version no longer works or the user made a fatal error in editing the files
 or their structure.
 
 
+Git is run through the shell. A user begins by initializing a directory as
+a Git repository; once the user makes changes to this repository, such as by
+adding files or directories, the user can then add those changes to the 
+"staging area," which notes the changes in the repository that have yet to be
+saved. The user then commits these changes, and Git takes a snapshot of the
+respository and all the files it was following; now this version of the 
+respository can be recalled at a later time. A general outline of the use of
+Git, from initialization to first commit, will look something like this:
 
+
+```
+#assuming you are in the directory that is to become the respository
+>git init #initializes the directory as a Git repository
+>touch file1.txt
+>git status #to check the files that have changed and need to be added to the staging area
+>git add file1.txt #Git now tracks file1.txt for changes
+>git commit -m "First commit" #use -m to add a message - good commit messages help people understand how this version is different from the previous one
+```
 
 
 ##What is GitHub?
@@ -76,6 +93,9 @@ always have an updated version of the project. For this project, GitHub
 acts as a storage area for the project so that the instructors can view
 the files in my "submission", and also serves as an online repository
 to save my progress should anything happen to my local files.
+
+
+GitHub is largely accessed through the site, github.com. 
 
 
 ##What is Pandoc?
