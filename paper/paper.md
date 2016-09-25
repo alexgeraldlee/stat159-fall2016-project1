@@ -38,8 +38,40 @@ way the author performed them; thus, the process of exactly reproducing
 the project and its results is much simpler andmistakes in the process
 can be more easily identified.
 
+A Makefile uses special syntax, somewhat akin to functions, that tells
+the system what command string to run. This is implemented by a
+"function" name, followed by a ":"; all lines below that are indented
+with a "\t" (a tab space) will be executed when the Makefile is run.
+Variables can also be created, and will stand in for any string of text
+within the Makefile; this is useful when there is a text string that
+appears multiple times within the Makefile, especially a long one like a
+file extension. These variables can be called within the Makefile by
+substituting the string with \$(variable name). When the user uses the
+make command in the shell, the Makefile will run the all: function,
+which runs the function(s) that follow the colon. Other functions may be
+defined, but do not have to be called by all:; instead, the user can run
+"make (function name)" in the shell to run that series of command lines.
+A basic implementation of a Makefile may look something like this:
+
+    files = ~/Desktop/folder1/
+
+
+    all: removefile
+
+
+    removefile:
+
+        rm $(files)/file1.txt
+
+
+    createfile:
+
+        touch file1.txt
+
 What is Git?
 ------------
+
+![](../images/git-logo.png "This is Git's Logo")
 
 Git is a version control system that logs the changes made to the files
 a project is using. Git stores this information in the form of snapshots
@@ -51,6 +83,8 @@ editing the files or their structure.
 
 What is GitHub?
 ---------------
+
+![](../images/github-logo.png "This is GitHub's Logo. Isn't it cute?")
 
 GitHub is an online storage location for Git repositories; that is, it
 stores all the snapshots online, allowing for access across different
@@ -66,7 +100,18 @@ save my progress should anything happen to my local files.
 What is Pandoc?
 ---------------
 
+![](../images/pandoc-logo.png "This is Pandoc's site header")
+
 Pandoc is a Unix utility that facilitates file conversion between a wide
 variety of files. Pandoc allows users to easily convert files into
 different formats, which allows them to be posted on different platforms
 and more easily transmit them to other machines.
+
+What is Markdown?
+-----------------
+
+![](../images/markdown-logo.png "M-down")
+
+Markdown is a "text-to-HTML conversion tool for web writers," which
+allows anyone to write in plain text and convert it automatically to
+formatted HTML.
