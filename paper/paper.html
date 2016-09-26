@@ -15,8 +15,8 @@
 <h1 id="utilities-of-reproducible-workflows">Utilities of Reproducible Workflows</h1>
 <h2 id="what-is-a-makefile">What is a Makefile?</h2>
 <p>A Makefile is a document that is used in running Make, a Unix utility. A Makefile contains shell commands, and when &quot;make&quot; is called in the terminal the specified shell commands are run, updating old files as necessary. A Makefile can be used to show the various shell commands that are used in the process of making a project, which are often not shown in standard files because they are not code per se. Preserving the shell commands allows the project owner to return to the project after some time away, and still be able to recreate many of the files that are necessary for the project. Additionally,by including a Makefile in the project specs others who want to reproduce the project can run the Makefile to perform exactly the same actions as the author, exactly the way the author performed them; thus, the process of exactly reproducing the project and its results is much simpler andmistakes in the process can be more easily identified.</p>
-<p>A Makefile uses special syntax, somewhat akin to functions, that tells the system what command string to run. This is implemented by a &quot;function&quot; name, followed by a &quot;:&quot;; all lines below that are indented with a &quot;&quot; (a tab space) will be executed when the Makefile is run. Variables can also be created, and will stand in for any string of text within the Makefile; this is useful when there is a text string that appears multiple times within the Makefile, especially a long one like a file extension. These variables can be called within the Makefile by substituting the string with <code>$(variable name)</code>. When the user uses the make command in the shell, the Makefile will run the all: function, which runs the function(s) that follow the colon. Other functions may be defined, but do not have to be called by all:; instead, the user can run <code>make (function name)</code> in the shell to run that series of command lines. A basic implementation of a Makefile may look something like this:</p>
-<pre><code>files = ~/Desktop/folder1/
+<p>A Makefile uses special syntax, somewhat akin to functions, that tells the system what command string to run. This is implemented by a &quot;rule&quot; target, followed by a &quot;:&quot;, which signifies the intended output files for the rule; all lines below that are indented with a &quot;&quot; (a tab space) will be executed in the shell when the Makefile is run. Each rule may have dependencies following the &quot;:&quot;; these files must be present in order for the rule to execute, otherwise it returns an error for the missing file(s). When <code>make</code> is called, it will check the time of the last edit of all the target file and its dependent files; if the times are different then Make will run those rules and update the target files, if not then Make will simply say that the files are up to date. Variables can also be created, and will stand in for any string of text within the Makefile; this is useful when there is a text string that appears multiple times within the Makefile, especially a long one like a file extension. These variables can be called within the Makefile by substituting the string with <code>$(variable name)</code>. When the user uses the make command in the shell, the Makefile will run the <code>all:</code> rule, if defined, which runs the rule(s) that follow the colon. Other rules may be defined, but do not have to be called by all:; instead, the user can run <code>make (rule name)</code> in the shell to run that series of command lines. A basic implementation of a Makefile may look something like this:</p>
+<pre><code>files = folder1/folder2
 
 all: removefile
 
@@ -30,7 +30,7 @@ createfile:
 <img src="../images/git-logo.png" title="This is Git&#39;s Logo" />
 
 </div>
-<p>Git is a version control system that logs the changes made to the files a project is using. Git stores this information in the form of snapshots of the file system at given points; this allows a user to not only store the process they took to build the project but also allows them to revert to an older version of the project, which may be necessary if the current version no longer works or the user made a fatal error in editing the files or their structure.</p>
+<p>Git is a version control system that logs the changes made to the files a project is using. Git stores this information in the form of snapshots of the file system at given points; this allows a user to not only store the process they took to build the project but also allows them to revert to an older version of the project, which may be necessary if the current version no longer works or if the user made a fatal error in editing the files or their structure.</p>
 <p>Git is run through the shell. A user begins by initializing a directory as a Git repository; once the user makes changes to this repository, such as by adding files or directories, the user can then add those changes to the &quot;staging area,&quot; which notes the changes in the repository that have yet to be saved. The user then commits these changes, and Git takes a snapshot of the respository and all the files it was following; now this version of the respository can be recalled at a later time. A general outline of the use of Git, from initialization to first commit, will look something like this:</p>
 <pre><code>#assuming you are in the directory that is to become the respository
 &gt;git init #initializes the directory as a Git repository
@@ -40,13 +40,13 @@ createfile:
 &gt;git commit -m &quot;First commit&quot; #use -m to add a message - good commit messages help people understand how this version is different from the previous one</code></pre>
 <p>The user can check differences between the current version and the latest saved version of a file by calling:</p>
 <pre><code>&gt;git diff HEAD~X &lt;file&gt;</code></pre>
-<p>This will show the changes made to the file since the specified commit. X can be any number here, but if X == 0 then the ~ is omitted. X denotes the number of commits in the past the user wants to compare; for example, if there have been three commits and the user wants to see the difference between the current version and the original version, the user would call:</p>
+<p>This will show the changes made to the file since the specified commit. <code>X</code> can be any number here, but if <code>X</code> == 0 then the <code>~</code> is omitted. <code>X</code> denotes the number of commits in the past the user wants to compare; for example, if there have been three commits and the user wants to see the difference between the current version and the original version, the user would call:</p>
 <pre><code>&gt;git diff HEAD~2 &lt;file&gt;</code></pre>
 <p>If the user has made a change that they do not want to commit, the user can call:</p>
 <pre><code>&gt;git checkout -- &lt;file&gt;</code></pre>
-<p>This will revert the file to its previous state (the state it was in after the last commit); however, this command won't remove the file from the staging area if it's already there. If the file is already in the staging area, the user can call:</p>
+<p>This will revert the <code>&lt;file&gt;</code> to its previous state (the state it was in after the last commit); however, this command won't remove the file from the staging area if it's already there. If the file is already in the staging area, the user can call:</p>
 <pre><code>&gt;git reset HEAD &lt;file&gt;</code></pre>
-<p>This removes the file from the staging area, but does not revert it to its last version.</p>
+<p>This removes the <code>&lt;file&gt;</code> from the staging area, but does not revert it to its last version. The user would use <code>git checkout -- &lt;file&gt;</code> to then revert the changes.</p>
 <h2 id="what-is-github">What is GitHub?</h2>
 <div class="figure">
 <img src="../images/github-logo.png" title="This is GitHub&#39;s Logo. Isn&#39;t it cute?" />
@@ -64,18 +64,15 @@ createfile:
 <img src="../images/pandoc-logo.png" title="This is Pandoc&#39;s site header" />
 
 </div>
-<p>Pandoc is a Unix utility that facilitates file conversion between a wide variety of files. Pandoc allows users to easily convert files into different formats, which allows them to be posted on different platforms and more easily transmit them to other machines. Pandoc is run from the command line. The most basic call to pandoc would be:</p>
+<p>Pandoc is a Unix utility that facilitates file conversion between a wide variety of files. Pandoc allows users to easily convert files into different formats, which allows them to be posted on different platforms and more easily transmit them to other machines. This facilitates simpler compilations of text to be published online, but also facilitates a user's ability to download another researcher's files (which are often in .pdf or .html formats, which are not very conducive to editing) and convert them into a workable format, thus allowing them to more easily try to reproduce the results of the research.</p>
+<p>Pandoc is run from the command line. The most basic call to pandoc would be:</p>
 <pre><code>&gt;pandoc -f &lt;format1&gt; -t &lt;format2&gt; &lt;file&gt;</code></pre>
 <p>This converts <code>file</code> from <code>format1</code> to <code>format2</code>. A simpler implementation is to call:</p>
 <pre><code>&gt;pandoc -o &lt;output_file&gt; &lt;input_file&gt;</code></pre>
 <p>This takes the extension of <code>input_file</code> and converts from that format to the extension of the <code>output_file</code>. Converting to .pdf requires LaTeX be present on the machine.</p>
 <h2 id="what-is-markdown">What is Markdown?</h2>
-<div class="figure">
-<img src="../images/markdown-logo.png" title="M-down" />
-
-</div>
 <p>Markdown is a &quot;text-to-HTML conversion tool for web writers,&quot; which allows users to write in plain text and convert it automatically to formatted HTML. Users can use pandoc to convert a markdown (.md) file into a .html file, which will make the formatting visible when the .html is opened.</p>
-<p>Header lines can be made by putting a string of &quot;#&quot; in front of the line of text. Headers are smaller in size the more &quot;#&quot; there are, up to six. Users can add emphasis to pieces of text: italics go in a pair of &quot;*&quot; or &quot;_&quot;, bold goes in a pair of &quot;**&quot; or &quot;__&quot;, and a strikethrough goes in a pair of &quot;~~&quot;. In order to make a list, start with a number followed by a period, such as &quot;1.&quot;; keep going with numbers in this format to make an ordered list. An unordered sublist can be made using &quot; *&quot; (two spaces and an asterisk) at the beginning of the line; ordered sublists are made using &quot; 1.&quot; (two spaces and a number). Users can put links into their .md files in various ways; the most basic way is using <code>[Link text](&lt;link&gt; 'Link text when hovered over')</code>. An image can be inserted using <code>![Image text](&lt;link or path to image&gt; 'Image text when hovered over')</code>. When putting code into a document, the user can put the code in a pair of &quot;`&quot; or, if there are multiple lines of code, put the code in a block separated by &quot;```&quot; at the top and bottom of the block. Examples are below:</p>
+<p>Header lines can be made by putting a string of &quot;#&quot; in front of the line of text. Headers are smaller in size the more &quot;#&quot; there are, up to six. Users can add emphasis to pieces of text: italics go in a pair of &quot;*&quot; or &quot;_&quot;, bold goes in a pair of &quot;**&quot; or &quot;__&quot;, and a strikethrough goes in a pair of &quot;~~&quot;. In order to make a list, start with a number followed by a period, such as &quot;1.&quot;; keep going with numbers in this format to make an ordered list. An unordered sublist can be made using &quot;&quot; (a tab and an asterisk) at the beginning of the line; ordered sublists are made using &quot;1.&quot; (a tab and a number). Users can put links into their .md files in various ways; the most basic way is using <code>[Link text](&lt;link&gt; 'Link text when hovered over')</code>. An image can be inserted using <code>![Image text](&lt;link or path to image&gt; 'Image text when hovered over')</code>. When putting code into a document, the user can put the code in a pair of &quot;`&quot; or, if there are multiple lines of code, put the code in a block separated by &quot;```&quot; at the top and bottom of the block. A horizontal break line can be made using &quot;***&quot;, &quot;___&quot;, or &quot;---&quot;. Examples are below:</p>
 <pre><code>#This is Markdown!
 
 ##This is also Markdown! But smaller
@@ -92,17 +89,21 @@ createfile:
 
 2. List item 2
 
-  * Unordered list item 1
+    * Unordered list item 1
 
 3. List item 3
 
-  1. Ordered list item 1
+    1. Ordered list item 1
 
 * Unordered list item
 
+Horizontal Line Break
+
+***
+
 [Google](www.google.com &quot;This is a link&quot;)
 
-![Markdown](../images/markdown-logo.png &quot;This is an image. Markdown!&quot;)
+![Markdown Logo](../images/markdown-logo.png &quot;This is an image. Markdown!&quot;)
 
 `y = m * x + b`</code></pre>
 <h1 id="this-is-markdown">This is Markdown!</h1>
@@ -113,23 +114,59 @@ createfile:
 <p><del>strikethrough</del></p>
 <ol style="list-style-type: decimal">
 <li><p>List item 1</p></li>
-<li><p>List item 2</p></li>
-</ol>
+<li><p>List item 2</p>
 <ul>
 <li>Unordered list item 1</li>
-</ul>
-<ol start="3" style="list-style-type: decimal">
-<li><p>List item 3</p></li>
-<li><p>Ordered list item 1</p></li>
+</ul></li>
+<li><p>List item 3</p>
+<ol style="list-style-type: decimal">
+<li>Ordered list item 1</li>
+</ol></li>
 </ol>
 <ul>
 <li>Unordered list item</li>
 </ul>
+<p>Horizontal Line Break</p>
+<hr />
 <p><a href="www.google.com" title="This is a link">Google</a></p>
 <div class="figure">
-<img src="../images/markdown-logo.png" title="This is an image. Markdown!" alt="Markdown" />
-<p class="caption">Markdown</p>
+<img src="../images/markdown-logo.png" title="This is an image. Markdown!" alt="Markdown Logo" />
+<p class="caption">Markdown Logo</p>
 </div>
 <p><code>y = m * x + b</code></p>
+<h3 id="tables-in-markdown">Tables in Markdown</h3>
+<p>Some versions of Markdown support the creation of tables. Tables are created by separating the different columns by &quot;|&quot;. A &quot;title&quot; row can be created by having a line of &quot;---&quot; (at least three-long) in the row directly beneath that column title. If a &quot;:&quot; is added at the beginning and/or end of the line of dashes, the text in that column will be justified towards the colon; each column is left-justified by default.</p>
+<pre><code>|This|is|a|Table|
+|---|:---:|:---:|---:|
+|left-justified|center-justified|also center-justified|right-justified|
+|5! = 120|Alexander|Lee|Scarves|</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">This</th>
+<th align="center">is</th>
+<th align="center">a</th>
+<th align="right">Table</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">left-justified</td>
+<td align="center">center-justified</td>
+<td align="center">also center-justified</td>
+<td align="right">right-justified</td>
+</tr>
+<tr class="even">
+<td align="left">5! = 120</td>
+<td align="center">Alexander</td>
+<td align="center">Lee</td>
+<td align="right">Scarves</td>
+</tr>
+</tbody>
+</table>
+<p>This example above shows that this verion of Markdown supports the creation of tables but does not support a very pretty style of table.</p>
+<h2 id="this-report">This Report</h2>
+<p>This report was made using a combination of all the tools mentioned in the report. Make was used to download the .png files and construct paper.md and paper.html. Git was used to store the local changes to all the files in the project. GitHub was used to store the local changes in an online repository, and will be used as a &quot;submission&quot; of sorts for the grading of it. Pandoc was used to convert paper.md to paper.html. All written portions of the project were written in Markdown. The main websites of each of these tools were used to get a general idea of what the creators intended the tool be used for, and their importance to reproducibility were taken from lectures. The &quot;easy&quot; part was explaining how to use the tools, particularly because the documentation for all of them is easily found online and/or drawn from lecture. The challenge was figuring out how to format the written portions based on the given file structure in the instructions. The most time consuming part was writing the content of 02-discussion.md, since it was the bulk of the project as it explained the usage of the five tools. Because this was a solo project, GitHub was only used for storage; <code>git pull</code> never had to be called, as there were no additional commits to pull. The whole project has taken about 8-10 hours.</p>
+<h1 id="conclusion">Conclusion</h1>
 </body>
 </html>

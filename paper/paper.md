@@ -49,21 +49,28 @@ the project and its results is much simpler andmistakes in the process
 can be more easily identified.
 
 A Makefile uses special syntax, somewhat akin to functions, that tells
-the system what command string to run. This is implemented by a
-"function" name, followed by a ":"; all lines below that are indented
-with a "\t" (a tab space) will be executed when the Makefile is run.
+the system what command string to run. This is implemented by a "rule"
+target, followed by a ":", which signifies the intended output files for
+the rule; all lines below that are indented with a "\t" (a tab space)
+will be executed in the shell when the Makefile is run. Each rule may
+have dependencies following the ":"; these files must be present in
+order for the rule to execute, otherwise it returns an error for the
+missing file(s). When `make` is called, it will check the time of the
+last edit of all the target file and its dependent files; if the times
+are different then Make will run those rules and update the target
+files, if not then Make will simply say that the files are up to date.
 Variables can also be created, and will stand in for any string of text
 within the Makefile; this is useful when there is a text string that
 appears multiple times within the Makefile, especially a long one like a
 file extension. These variables can be called within the Makefile by
 substituting the string with `$(variable name)`. When the user uses the
-make command in the shell, the Makefile will run the all: function,
-which runs the function(s) that follow the colon. Other functions may be
-defined, but do not have to be called by all:; instead, the user can run
-`make (function name)` in the shell to run that series of command lines.
+make command in the shell, the Makefile will run the `all:` rule, if
+defined, which runs the rule(s) that follow the colon. Other rules may
+be defined, but do not have to be called by all:; instead, the user can
+run `make (rule name)` in the shell to run that series of command lines.
 A basic implementation of a Makefile may look something like this:
 
-    files = ~/Desktop/folder1/
+    files = folder1/folder2
 
     all: removefile
 
@@ -83,7 +90,7 @@ a project is using. Git stores this information in the form of snapshots
 of the file system at given points; this allows a user to not only store
 the process they took to build the project but also allows them to
 revert to an older version of the project, which may be necessary if the
-current version no longer works or the user made a fatal error in
+current version no longer works or if the user made a fatal error in
 editing the files or their structure.
 
 Git is run through the shell. A user begins by initializing a directory
@@ -109,7 +116,7 @@ latest saved version of a file by calling:
     >git diff HEAD~X <file>
 
 This will show the changes made to the file since the specified commit.
-X can be any number here, but if X == 0 then the \~ is omitted. X
+`X` can be any number here, but if `X` == 0 then the `~` is omitted. `X`
 denotes the number of commits in the past the user wants to compare; for
 example, if there have been three commits and the user wants to see the
 difference between the current version and the original version, the
@@ -122,15 +129,16 @@ can call:
 
     >git checkout -- <file>
 
-This will revert the file to its previous state (the state it was in
+This will revert the `<file>` to its previous state (the state it was in
 after the last commit); however, this command won't remove the file from
 the staging area if it's already there. If the file is already in the
 staging area, the user can call:
 
     >git reset HEAD <file>
 
-This removes the file from the staging area, but does not revert it to
-its last version.
+This removes the `<file>` from the staging area, but does not revert it
+to its last version. The user would use `git checkout -- <file>` to then
+revert the changes.
 
 What is GitHub?
 ---------------
@@ -175,8 +183,15 @@ What is Pandoc?
 Pandoc is a Unix utility that facilitates file conversion between a wide
 variety of files. Pandoc allows users to easily convert files into
 different formats, which allows them to be posted on different platforms
-and more easily transmit them to other machines. Pandoc is run from the
-command line. The most basic call to pandoc would be:
+and more easily transmit them to other machines. This facilitates
+simpler compilations of text to be published online, but also
+facilitates a user's ability to download another researcher's files
+(which are often in .pdf or .html formats, which are not very conducive
+to editing) and convert them into a workable format, thus allowing them
+to more easily try to reproduce the results of the research.
+
+Pandoc is run from the command line. The most basic call to pandoc would
+be:
 
     >pandoc -f <format1> -t <format2> <file>
 
@@ -192,8 +207,6 @@ be present on the machine.
 What is Markdown?
 -----------------
 
-![](../images/markdown-logo.png "M-down")
-
 Markdown is a "text-to-HTML conversion tool for web writers," which
 allows users to write in plain text and convert it automatically to
 formatted HTML. Users can use pandoc to convert a markdown (.md) file
@@ -207,15 +220,16 @@ six. Users can add emphasis to pieces of text: italics go in a pair of
 strikethrough goes in a pair of "\~\~". In order to make a list, start
 with a number followed by a period, such as "1."; keep going with
 numbers in this format to make an ordered list. An unordered sublist can
-be made using " \*" (two spaces and an asterisk) at the beginning of the
-line; ordered sublists are made using " 1." (two spaces and a number).
-Users can put links into their .md files in various ways; the most basic
-way is using `[Link text](<link> 'Link text when hovered over')`. An
-image can be inserted using
+be made using "\t*" (a tab and an asterisk) at the beginning of the
+line; ordered sublists are made using "\t1." (a tab and a number). Users
+can put links into their .md files in various ways; the most basic way
+is using `[Link text](<link> 'Link text when hovered over')`. An image
+can be inserted using
 `![Image text](<link or path to image> 'Image text when hovered over')`.
 When putting code into a document, the user can put the code in a pair
 of "\`" or, if there are multiple lines of code, put the code in a block
-separated by "\`\`\`" at the top and bottom of the block. Examples are
+separated by "\`\`\`" at the top and bottom of the block. A horizontal
+break line can be made using "\*\*\*", "\_\_\_", or "---". Examples are
 below:
 
     #This is Markdown!
@@ -234,17 +248,21 @@ below:
 
     2. List item 2
 
-      * Unordered list item 1
+        * Unordered list item 1
 
     3. List item 3
 
-      1. Ordered list item 1
+        1. Ordered list item 1
 
     * Unordered list item
 
+    Horizontal Line Break
+
+    ***
+
     [Google](www.google.com "This is a link")
 
-    ![Markdown](../images/markdown-logo.png "This is an image. Markdown!")
+    ![Markdown Logo](../images/markdown-logo.png "This is an image. Markdown!")
 
     `y = m * x + b`
 
@@ -266,16 +284,69 @@ This is also Markdown! But smaller
 
 2.  List item 2
 
--   Unordered list item 1
+    -   Unordered list item 1
 
 3.  List item 3
 
-4.  Ordered list item 1
+    1.  Ordered list item 1
 
 -   Unordered list item
 
+Horizontal Line Break
+
+------------------------------------------------------------------------
+
 [Google](www.google.com "This is a link")
 
-![Markdown](../images/markdown-logo.png "This is an image. Markdown!")
+![Markdown
+Logo](../images/markdown-logo.png "This is an image. Markdown!")
 
 `y = m * x + b`
+
+### Tables in Markdown
+
+Some versions of Markdown support the creation of tables. Tables are
+created by separating the different columns by "|". A "title" row can be
+created by having a line of "---" (at least three-long) in the row
+directly beneath that column title. If a ":" is added at the beginning
+and/or end of the line of dashes, the text in that column will be
+justified towards the colon; each column is left-justified by default.
+
+    |This|is|a|Table|
+    |---|:---:|:---:|---:|
+    |left-justified|center-justified|also center-justified|right-justified|
+    |5! = 120|Alexander|Lee|Scarves|
+
+  This                     is                    a                        Table
+  ---------------- ------------------ ----------------------- -----------------
+  left-justified    center-justified   also center-justified    right-justified
+  5! = 120             Alexander                Lee                     Scarves
+
+This example above shows that this verion of Markdown supports the
+creation of tables but does not support a very pretty style of table.
+
+This Report
+-----------
+
+This report was made using a combination of all the tools mentioned in
+the report. Make was used to download the .png files and construct
+paper.md and paper.html. Git was used to store the local changes to all
+the files in the project. GitHub was used to store the local changes in
+an online repository, and will be used as a "submission" of sorts for
+the grading of it. Pandoc was used to convert paper.md to paper.html.
+All written portions of the project were written in Markdown. The main
+websites of each of these tools were used to get a general idea of what
+the creators intended the tool be used for, and their importance to
+reproducibility were taken from lectures. The "easy" part was explaining
+how to use the tools, particularly because the documentation for all of
+them is easily found online and/or drawn from lecture. The challenge was
+figuring out how to format the written portions based on the given file
+structure in the instructions. The most time consuming part was writing
+the content of 02-discussion.md, since it was the bulk of the project as
+it explained the usage of the five tools. Because this was a solo
+project, GitHub was only used for storage; `git pull` never had to be
+called, as there were no additional commits to pull. The whole project
+has taken about 8-10 hours.
+
+Conclusion
+==========
