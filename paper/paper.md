@@ -17,15 +17,19 @@ not only by the laypeople but also by politicians and organizational
 leaders, as gospel when it comes to making decisions for themselves or
 for others, it is the responsibility of the researchers to ensure not
 only that their own studies are correct, but also that other researchers
-can verify their correctness and that they verify the research that
-others publish. To that end, it is important that researchers employ the
-tools at their disposal for making their research, methodology, and data
-as public and as compatible with other machines as possible. This report
-will look at five of these tools - Make, Git, GitHub, pandoc, and
-Markdown - and address their function, how to use them at a rudimentary
-level, why they are important for the reproducible workflow, and how
-they address the current lack of reproducible research in the world
-today.
+can verify their correctness and that they themselves verify the
+research that others publish. To that end, it is important that
+researchers employ the tools at their disposal for making their
+research, methodology, and data as public and as compatible with other
+machines as possible. This report will look at five of these tools -
+Make, Git, GitHub, pandoc, and Markdown - and address their function,
+how to use them at a rudimentary level, why they are important for the
+reproducible workflow, and how they address the current lack of
+reproducible research in the world today. This project should function
+not only as an introduction to these tools but also as a re-introduction
+to them, for those who have not used them in a while; this can be used
+as a basic guide to these five tools that would allow anyone to
+immediately begin a reproducible project.
 
 Utilities of Reproducible Workflows
 ===================================
@@ -350,3 +354,17 @@ has taken about 8-10 hours.
 
 Conclusion
 ==========
+
+Reproducibility is the hallmark of a complete study: if the results
+cannot be reproduced, the conclusions of that study should be
+disregarded until further research supports it. To that end, researchers
+need to support the reproducibility of their own work by utilizing the
+various tools available to them. Make is a tool that allows users (and
+others) to run the exact same shell commands every single time, no
+matter how many, without error; this allows other researchers to
+reproduce the shell commands, which are often hidden because they are
+not typically considered "code". Git is a tool that handles version
+control of the project, facilitating the storage and retrieval of
+various versions of the project. GitHub, an online extension of Git,
+gives the benefits of Git to various collaborators and provides a public
+history of the project's versions for outside researchers to access.
