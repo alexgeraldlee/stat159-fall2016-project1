@@ -95,7 +95,19 @@ the files in my "submission", and also serves as an online repository
 to save my progress should anything happen to my local files.
 
 
-GitHub is largely accessed through the site, github.com. 
+GitHub is largely accessed through the site, github.com. After making
+an account users can create a repository on the account, which has almost
+exactly the same function as a local Git repository. Users can bind the
+GitHub repository to their local repository via the commands:
+
+```
+>git remote add origin <link>
+>git push -u origin master
+```
+
+This will connect the local repository to the GitHub repository, and as
+the user makes commits they can then use the second line to push those 
+changes to the GitHub repository online. 
 
 
 ##What is Pandoc?

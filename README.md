@@ -27,4 +27,4 @@ stat159-fall2016-project1/
 
 ##The Makefile
 
-The Makefile is used to construct paper.md and paper.html, by compiling the .md files in sections/ using pandoc. The Makefile also holds a script "clean" that can be called to remove the .html file. 
+The Makefile is used to construct paper.md and paper.html, by compiling the .md files in sections/ using pandoc. The Makefile also holds a script "clean" that can be called to remove the .html file from the paper/ directory
