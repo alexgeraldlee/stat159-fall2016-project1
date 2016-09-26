@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="abstract">Abstract</h1>
+<p>This report discusses the function, use, and importance of five tools that address the lack of reproducible research: Make, Git, GitHub, pandoc, and Markdown. This report will also detail the resources used to generate it, comment on the ease or difficulty of producing the project, and note the purpose of creating this project along with its take-home messages.</p>
+<h1 id="introduction">Introduction</h1>
+<p>The inability to reproduce work is a severe roadblock in the way of scientific study. In a world where scientific research is often taken, not only by the laypeople but also by politicians and organizational leaders, as gospel when it comes to making decisions for themselves or for others, it is the responsibility of the researchers to ensure not only that their own studies are correct, but also that other researchers can verify their correctness and that they verify the research that others publish. To that end, it is important that researchers employ the tools at their disposal for making their research, methodology, and data as public and as compatible with other machines as possible. This report will look at five of these tools - Make, Git, GitHub, pandoc, and Markdown - and address their function, how to use them at a rudimentary level, why they are important for the reproducible workflow, and how they address the current lack of reproducible research in the world today.</p>
+<h1 id="utilities-of-reproducible-workflows">Utilities of Reproducible Workflows</h1>
+<h2 id="what-is-a-makefile">What is a Makefile?</h2>
+<p>A Makefile is a document that is used in running Make, a Unix utility. A Makefile contains shell commands, and when &quot;make&quot; is called in the terminal the specified shell commands are run, updating old files as necessary. A Makefile can be used to show the various shell commands that are used in the process of making a project, which are often not shown in standard files because they are not code per se. Preserving the shell commands allows the project owner to return to the project after some time away, and still be able to recreate many of the files that are necessary for the project. Additionally,by including a Makefile in the project specs others who want to reproduce the project can run the Makefile to perform exactly the same actions as the author, exactly the way the author performed them; thus, the process of exactly reproducing the project and its results is much simpler andmistakes in the process can be more easily identified.</p>
+<p>A Makefile uses special syntax, somewhat akin to functions, that tells the system what command string to run. This is implemented by a &quot;function&quot; name, followed by a &quot;:&quot;; all lines below that are indented with a &quot;&quot; (a tab space) will be executed when the Makefile is run. Variables can also be created, and will stand in for any string of text within the Makefile; this is useful when there is a text string that appears multiple times within the Makefile, especially a long one like a file extension. These variables can be called within the Makefile by substituting the string with <code>$(variable name)</code>. When the user uses the make command in the shell, the Makefile will run the all: function, which runs the function(s) that follow the colon. Other functions may be defined, but do not have to be called by all:; instead, the user can run <code>make (function name)</code> in the shell to run that series of command lines. A basic implementation of a Makefile may look something like this:</p>
+<pre><code>files = ~/Desktop/folder1/
+
+all: removefile
+
+removefile:
+    rm $(files)/file1.txt
+
+createfile:
+    touch file1.txt</code></pre>
+<h2 id="what-is-git">What is Git?</h2>
+<div class="figure">
+<img src="../images/git-logo.png" title="This is Git&#39;s Logo" />
+
+</div>
+<p>Git is a version control system that logs the changes made to the files a project is using. Git stores this information in the form of snapshots of the file system at given points; this allows a user to not only store the process they took to build the project but also allows them to revert to an older version of the project, which may be necessary if the current version no longer works or the user made a fatal error in editing the files or their structure.</p>
+<p>Git is run through the shell. A user begins by initializing a directory as a Git repository; once the user makes changes to this repository, such as by adding files or directories, the user can then add those changes to the &quot;staging area,&quot; which notes the changes in the repository that have yet to be saved. The user then commits these changes, and Git takes a snapshot of the respository and all the files it was following; now this version of the respository can be recalled at a later time. A general outline of the use of Git, from initialization to first commit, will look something like this:</p>
+<pre><code>#assuming you are in the directory that is to become the respository
+&gt;git init #initializes the directory as a Git repository
+&gt;touch file1.txt
+&gt;git status #to check the files that have changed and need to be added to the staging area
+&gt;git add file1.txt #Git now tracks file1.txt for changes
+&gt;git commit -m &quot;First commit&quot; #use -m to add a message - good commit messages help people understand how this version is different from the previous one</code></pre>
+<p>The user can check differences between the current version and the latest saved version of a file by calling:</p>
+<pre><code>&gt;git diff HEAD~X &lt;file&gt;</code></pre>
+<p>This will show the changes made to the file since the specified commit. X can be any number here, but if X == 0 then the ~ is omitted. X denotes the number of commits in the past the user wants to compare; for example, if there have been three commits and the user wants to see the difference between the current version and the original version, the user would call:</p>
+<pre><code>&gt;git diff HEAD~2 &lt;file&gt;</code></pre>
+<p>If the user has made a change that they do not want to commit, the user can call:</p>
+<pre><code>&gt;git checkout -- &lt;file&gt;</code></pre>
+<p>This will revert the file to its previous state (the state it was in after the last commit); however, this command won't remove the file from the staging area if it's already there. If the file is already in the staging area, the user can call:</p>
+<pre><code>&gt;git reset HEAD &lt;file&gt;</code></pre>
+<p>This removes the file from the staging area, but does not revert it to its last version.</p>
+<h2 id="what-is-github">What is GitHub?</h2>
+<div class="figure">
+<img src="../images/github-logo.png" title="This is GitHub&#39;s Logo. Isn&#39;t it cute?" />
+
+</div>
+<p>GitHub is an online storage location for Git repositories; that is, it stores all the snapshots online, allowing for access across different machines. This is exceptionally useful when a project has multiple collaborators, all making different changes to the project files; each user may commit changes to the online repository, and each user can pull the latest versions of the project to their local machine so that they always have an updated version of the project. For this project, GitHub acts as a storage area for the project so that the instructors can view the files in my &quot;submission&quot;, and also serves as an online repository to save my progress should anything happen to my local files.</p>
+<p>GitHub is largely accessed through the site, github.com. After making an account users can create a repository on the account, which has almost exactly the same function as a local Git repository. Users can bind the GitHub repository to their local repository via the commands:</p>
+<pre><code>&gt;git remote add origin &lt;link&gt;
+&gt;git push -u origin master</code></pre>
+<p>This will connect the local repository to the GitHub repository, and as the user makes commits they can then use the second line to push those changes to the GitHub repository online. If there are multiple collaborators on a project and several people are pushing their code to the GitHub repository, a user can call:</p>
+<pre><code>&gt;git pull</code></pre>
+<p>This will pull the latest updates from the GitHub repository, if there have been commits that do not match the local commits.</p>
+<h2 id="what-is-pandoc">What is Pandoc?</h2>
+<div class="figure">
+<img src="../images/pandoc-logo.png" title="This is Pandoc&#39;s site header" />
+
+</div>
+<p>Pandoc is a Unix utility that facilitates file conversion between a wide variety of files. Pandoc allows users to easily convert files into different formats, which allows them to be posted on different platforms and more easily transmit them to other machines. Pandoc is run from the command line. The most basic call to pandoc would be:</p>
+<pre><code>&gt;pandoc -f &lt;format1&gt; -t &lt;format2&gt; &lt;file&gt;</code></pre>
+<p>This converts <code>file</code> from <code>format1</code> to <code>format2</code>. A simpler implementation is to call:</p>
+<pre><code>&gt;pandoc -o &lt;output_file&gt; &lt;input_file&gt;</code></pre>
+<p>This takes the extension of <code>input_file</code> and converts from that format to the extension of the <code>output_file</code>. Converting to .pdf requires LaTeX be present on the machine.</p>
+<h2 id="what-is-markdown">What is Markdown?</h2>
+<div class="figure">
+<img src="../images/markdown-logo.png" title="M-down" />
+
+</div>
+<p>Markdown is a &quot;text-to-HTML conversion tool for web writers,&quot; which allows users to write in plain text and convert it automatically to formatted HTML. Users can use pandoc to convert a markdown (.md) file into a .html file, which will make the formatting visible when the .html is opened.</p>
+<p>Header lines can be made by putting a string of &quot;#&quot; in front of the line of text. Headers are smaller in size the more &quot;#&quot; there are, up to six. Users can add emphasis to pieces of text: italics go in a pair of &quot;*&quot; or &quot;_&quot;, bold goes in a pair of &quot;**&quot; or &quot;__&quot;, and a strikethrough goes in a pair of &quot;~~&quot;. In order to make a list, start with a number followed by a period, such as &quot;1.&quot;; keep going with numbers in this format to make an ordered list. An unordered sublist can be made using &quot; *&quot; (two spaces and an asterisk) at the beginning of the line; ordered sublists are made using &quot; 1.&quot; (two spaces and a number). Users can put links into their .md files in various ways; the most basic way is using <code>[Link text](&lt;link&gt; 'Link text when hovered over')</code>. An image can be inserted using <code>![Image text](&lt;link or path to image&gt; 'Image text when hovered over')</code>. When putting code into a document, the user can put the code in a pair of &quot;`&quot; or, if there are multiple lines of code, put the code in a block separated by &quot;```&quot; at the top and bottom of the block. Examples are below:</p>
+<pre><code>#This is Markdown!
+
+##This is also Markdown! But smaller
+
+###And so on and so forth
+
+*italics*
+
+**bold**
+
+~~strikethrough~~
+
+1. List item 1
+
+2. List item 2
+
+  * Unordered list item 1
+
+3. List item 3
+
+  1. Ordered list item 1
+
+* Unordered list item
+
+[Google](www.google.com &quot;This is a link&quot;)
+
+![Markdown](../images/markdown-logo.png &quot;This is an image. Markdown!&quot;)
+
+`y = m * x + b`</code></pre>
+<h1 id="this-is-markdown">This is Markdown!</h1>
+<h2 id="this-is-also-markdown-but-smaller">This is also Markdown! But smaller</h2>
+<h3 id="and-so-on-and-so-forth">And so on and so forth</h3>
+<p><em>italics</em></p>
+<p><strong>bold</strong></p>
+<p><del>strikethrough</del></p>
+<ol style="list-style-type: decimal">
+<li><p>List item 1</p></li>
+<li><p>List item 2</p></li>
+</ol>
+<ul>
+<li>Unordered list item 1</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><p>List item 3</p></li>
+<li><p>Ordered list item 1</p></li>
+</ol>
+<ul>
+<li>Unordered list item</li>
+</ul>
+<p><a href="www.google.com" title="This is a link">Google</a></p>
+<div class="figure">
+<img src="../images/markdown-logo.png" title="This is an image. Markdown!" alt="Markdown" />
+<p class="caption">Markdown</p>
+</div>
+<p><code>y = m * x + b</code></p>
+</body>
+</html>

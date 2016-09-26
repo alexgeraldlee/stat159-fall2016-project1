@@ -26,11 +26,11 @@ will be executed when the Makefile is run. Variables can also be created, and
 will stand in for any string of text within the Makefile; this is useful when
 there is a text string that appears multiple times within the Makefile,
 especially a long one like a file extension. These variables can be called
-within the Makefile by substituting the string with $(variable name). 
+within the Makefile by substituting the string with `$(variable name)`. 
 When the user uses the make command in the shell, the Makefile will run the 
 all: function, which runs the function(s) that follow the colon. Other functions
 may be defined, but do not have to be called by all:; instead, the user can run
-"make (function name)" in the shell to run that series of command lines. A basic 
+`make (function name)` in the shell to run that series of command lines. A basic 
 implementation of a Makefile may look something like this:
 
 
@@ -164,7 +164,25 @@ have been commits that do not match the local commits.
 Pandoc is a Unix utility that facilitates file conversion between a wide
 variety of files. Pandoc allows users to easily convert files into different
 formats, which allows them to be posted on different platforms and more
-easily transmit them to other machines. 
+easily transmit them to other machines. Pandoc is run from the command line.
+The most basic call to pandoc would be:
+
+```
+>pandoc -f <format1> -t <format2> <file>
+```
+
+
+This converts `file` from `format1` to `format2`. A simpler implementation
+is to call:
+
+```
+>pandoc -o <output_file> <input_file>
+```
+
+
+This takes the extension of `input_file` and converts from that format to the
+extension of the `output_file`. Converting to .pdf requires LaTeX be present
+on the machine.
 
 
 ##What is Markdown?
@@ -172,5 +190,85 @@ easily transmit them to other machines.
 ![](../images/markdown-logo.png "M-down")
 
 Markdown is a "text-to-HTML conversion tool for web writers," which allows 
-anyone to write in plain text and convert it automatically to formatted HTML.
+users to write in plain text and convert it automatically to formatted HTML.
+Users can use pandoc to convert a markdown (.md) file into a .html file,
+which will make the formatting visible when the .html is opened.
 
+
+Header lines can be made by putting a string of "#" in front of the line of
+text. Headers are smaller in size the more "#" there are, up to six. Users
+can add emphasis to pieces of text: italics go in a pair of "*" or "_", bold
+goes in a pair of "**" or "__", and a strikethrough goes in a pair of "~~".
+In order to make a list, start with a number followed by a period, such as "1.";
+keep going with numbers in this format to make an ordered list. An unordered 
+sublist can be made using "  *" (two spaces and an asterisk) at the beginning
+of the line; ordered sublists are made using "  1." (two spaces and a number).
+Users can put links into their .md files in various ways; the most basic way is
+using `[Link text](<link> 'Link text when hovered over')`. An image can be inserted
+using `![Image text](<link or path to image> 'Image text when hovered over')`.
+When putting code into a document, the user can put the code in a pair of "`" or,
+if there are multiple lines of code, put the code in a block separated by "```" at 
+the top and bottom of the block. Examples are below:
+
+```
+#This is Markdown!
+
+##This is also Markdown! But smaller
+
+###And so on and so forth
+
+*italics*
+
+**bold**
+
+~~strikethrough~~
+
+1. List item 1
+
+2. List item 2
+
+  * Unordered list item 1
+
+3. List item 3
+
+  1. Ordered list item 1
+
+* Unordered list item
+
+[Google](www.google.com "This is a link")
+
+![Markdown](../images/markdown-logo.png "This is an image. Markdown!")
+
+`y = m * x + b`
+```
+
+
+#This is Markdown!
+
+##This is also Markdown! But smaller
+
+###And so on and so forth
+
+*italics*
+
+**bold**
+
+~~strikethrough~~
+
+1. List item 1
+
+2. List item 2
+
+  * Unordered list item 1
+
+3. List item 3
+
+  1. Ordered list item 1
+
+* Unordered list item
+
+[Google](www.google.com "This is a link")
+
+![Markdown](../images/markdown-logo.png "This is an image. Markdown!")
+
+`y = m * x + b`
