@@ -79,6 +79,43 @@ Git, from initialization to first commit, will look something like this:
 ```
 
 
+The user can check differences between the current version and the latest saved
+version of a file by calling:
+
+```
+>git diff HEAD~X <file>
+```
+
+
+This will show the changes made to the file since the specified commit. X can be any 
+number here, but if X == 0 then the ~ is omitted. X denotes the number of commits
+in the past the user wants to compare; for example, if there have been three commits and the user
+wants to see the difference between the current version and the original version, the user would call:
+
+```
+>git diff HEAD~2 <file>
+```
+
+
+If the user has made a change that they do not want to commit, the user can call:
+
+```
+>git checkout -- <file>
+```
+
+
+This will revert the file to its previous state (the state it was in after the
+last commit); however, this command won't remove the file from the staging area
+if it's already there. If the file is already in the staging area, the user can call:
+
+```
+>git reset HEAD <file>
+```
+
+
+This removes the file from the staging area, but does not revert it to its last version.
+
+
 ##What is GitHub?
 
 ![](../images/github-logo.png "This is GitHub's Logo. Isn't it cute?")
@@ -107,7 +144,17 @@ GitHub repository to their local repository via the commands:
 
 This will connect the local repository to the GitHub repository, and as
 the user makes commits they can then use the second line to push those 
-changes to the GitHub repository online. 
+changes to the GitHub repository online. If there are multiple collaborators
+on a project and several people are pushing their code to the GitHub
+repository, a user can call:
+
+```
+>git pull
+```
+
+
+This will pull the latest updates from the GitHub repository, if there
+have been commits that do not match the local commits.
 
 
 ##What is Pandoc?
