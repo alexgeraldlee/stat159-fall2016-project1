@@ -1,5 +1,7 @@
 #Author Name: Alexander Lee
 
+E-mail address: alexgeraldlee@berkeley.edu
+
 ##Project Structure
 
 The final structure of the project should look something like this:
